@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\ethan\\.virtualenvs\\SHTEM-iv-mN87o\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\ethan\\.virtualenvs\\SHTEM-iv-mN87o\\Scripts\\python.exe",
+    "jupyter.jupyterServerType": "local"
 }
