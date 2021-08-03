@@ -12,6 +12,13 @@ class TTTGame:
         self.game = np.zeros((3,3))
         self.translate = {0 : " ", 1 : "O", 2 : "X"}
 
+    def updatePlayers(self, x, o):
+        self.playerX = x
+        self.playerO = o
+
+    def getBoard(self):
+        return self.game
+
     def isDraw(self):
         for x in range(3):
             for y in range(3):

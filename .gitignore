@@ -1,0 +1,7 @@
+.pickle
+.csv
+Pipfile
+Pipfile.lock
+.ipynb
+.vscode
+_pycache_

@@ -1,4 +1,0 @@
-import pickle
- 
-class SaveData: 
-    
