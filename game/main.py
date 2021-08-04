@@ -57,7 +57,8 @@ def test(game, p1, p2):
     p2.setExploreChance(p2Chance)
 
 filewriter = None
-toCSV = [["Iterations", "Wins", "Draws", "Loses"]]
+toCSV = []
+#toCSV = [["Iterations", "Wins", "Draws", "Loses"]]
 #x is 2, o is 1
 
 xWins = 0
@@ -110,14 +111,21 @@ for x in range(numTries):
         p1.reduceExploreChance()
     if(iterations % testRate == 0):
         test(game,p1,p2)
-        toCSV.append([str(iterations), str(xWins), str(draws), str(oWins)])
+        toCSV.append([xWins])
         xWins = 0
         draws = 0
         oWins = 0
-with open('data.csv', 'w') as csvfile:
+with open('data.csv', 'wb') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    count = 0
+    total = 0
     for i in toCSV:
-        filewriter.writerow(i)
+        total += i[0]
+        count += 1
+        if(count % 10 == 0):
+            count = 0
+            filewriter.writerow(total)
+            total = 0
 print("game is over")
 save(p1)
 

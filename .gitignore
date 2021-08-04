@@ -1,7 +1,8 @@
-.pickle
-.csv
+*.csv
 Pipfile
 Pipfile.lock
-.ipynb
-.vscode
+*.ipynb
+*.vscode
 _pycache_
+*.pyc
+*.pickle
