@@ -5,12 +5,13 @@ from RandomPlayer import RandomPlayer as r
 import PySimpleGUI as sg
 import pickle
 import csv
+from alive_progress import alive_bar
 
 
 
-numTries = 1000;
-refreshRate = 10; 
-testRate = 1
+numTries = 1000000
+refreshRate = 100
+testRate = 10
 
 def save(obj):
         try:
@@ -51,7 +52,7 @@ def test(game, p1, p2):
             xWins += 1
         elif winner == "O":
             global oWins 
-            xWins += 1
+            oWins += 1
         game.reset()
     p1.setExploreChance(p1Chance)
     p2.setExploreChance(p2Chance)
@@ -68,9 +69,9 @@ draws = 0
 p1Symbol = 2
 p2Symbol = 1
 #choose between existing and new object
-#p1 = load("C:/Users/ethan/OneDrive/Documents/GitHub/SHTEM/game/data.pickle")
-p1 = p(p1Symbol)
-p2 = p(p2Symbol)
+p1 = load("C:/Users/ethan/OneDrive/Documents/GitHub/SHTEM/data.pickle")
+#p1 = p(p1Symbol)
+p2 = r(p2Symbol)
 p1.setSymbol(p1Symbol)
 p2.setSymbol(p2Symbol)
 p2.setExploreChance(1)
@@ -79,42 +80,44 @@ p2.setExploreChance(1)
 #p2 = load("C:/Users/ethan/OneDrive/Documents/GitHub/SHTEM/game/data.pickle")
 game = g(p1, p2)
 iterations = 0;
-for x in range(numTries):
-    iterations += 1
-    while(not game.hasEnded()):
-        response = game.makeMove()
-        if response == -1:
-            break
-        while response == False:
+with alive_bar(int(numTries/refreshRate), bar = 'classic', spinner = 'bar_recur') as bar:
+    for x in range(numTries):
+        iterations += 1
+        while(not game.hasEnded()):
             response = game.makeMove()
-        game.printGame()
-    winner = game.getWinner()
-    if winner == "draw" or winner == " ":
-        p1.reward(-1, game.getBoard())
-        # p2.reward(-1)
-        # draws += 1
-    elif winner == "X":
-        p1.reward(10, game.getBoard())
-        # p2.reward(-1)
-        # xWins += 1
-    elif winner == "O":
-        p1.reward(-10, game.getBoard())
-        # p2.reward(10)
-        # oWins += 1
-    else:
-        print(winner)
-    game.reset()
-    if(iterations % refreshRate == 0):
-        p2.setRewardTable(p1.getRewardTable())
-        p2.invertTable()
-        p2.setSymbol(p2Symbol)
-        p1.reduceExploreChance()
-    if(iterations % testRate == 0):
-        test(game,p1,p2)
-        toCSV.append([iterations, xWins, draws, oWins])
-        xWins = 0
-        draws = 0
-        oWins = 0
+            if response == -1:
+                break
+            while response == False:
+                response = game.makeMove()
+            game.printGame()
+        winner = game.getWinner()
+        if winner == "draw" or winner == " ":
+            p1.reward(-1, game.getBoard())
+            # p2.reward(-1)
+            # draws += 1
+        elif winner == "X":
+            p1.reward(10, game.getBoard())
+            # p2.reward(-1)
+            # xWins += 1
+        elif winner == "O":
+            p1.reward(-10, game.getBoard())
+            # p2.reward(10)
+            # oWins += 1
+        else:
+            print(winner)
+        game.reset()
+        if(iterations % refreshRate == 0):
+            p2.setRewardTable(p1.getRewardTable())
+            #p2.invertTable()
+            p2.setSymbol(p2Symbol)
+            p1.reduceExploreChance()
+            bar()
+        if(iterations % testRate == 0):
+            test(game,p1,p2)
+            toCSV.append([iterations, xWins, draws, oWins])
+            xWins = 0
+            draws = 0
+            oWins = 0
 with open('data.csv', 'w') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
     count = 0

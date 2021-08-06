@@ -13,6 +13,9 @@ class RandomPlayer:
     def getRewardTable(self):
         return None
     
+    def invertTable(self):
+        pass
+
     def setRewardTable(self, table):
         pass
 

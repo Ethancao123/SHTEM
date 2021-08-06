@@ -1,6 +1,5 @@
 *.csv
-Pipfile
-Pipfile.lock
+*.lock
 *.ipynb
 *.vscode
 _pycache_

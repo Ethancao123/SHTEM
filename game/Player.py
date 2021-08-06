@@ -24,7 +24,7 @@ class Player:
         return self.exploreChance
 
     def reduceExploreChance(self):
-        self.exploreChance /= 1.02
+        self.exploreChance /= 1.01
 
     def setExploreChance(self, chance):
         self.exploreChance = chance
